@@ -13,7 +13,7 @@ import {
   Map, 
   Settings,
   ShieldAlert,
-  SteeringWheel,
+  Car,
   Truck,
   Users
 } from "lucide-react";
@@ -140,7 +140,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       ]
     },
     { 
-      icon: SteeringWheel, 
+      icon: Car, 
       label: "Driver Management", 
       to: "/dashboard/drivers",
       subItems: [

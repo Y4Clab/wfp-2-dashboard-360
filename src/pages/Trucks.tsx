@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
@@ -438,23 +437,24 @@ const Trucks = () => {
                             <span className="text-xs text-muted-foreground">Not assigned</span>
                           )}
                         </TableCell>
-                        <TableCell className="hidden lg:table-cell">
-                          <div className="flex flex-col space-y-1">
-                            <div className="flex items-center justify-between">
-                              <Fuel className="h-3.5 w-3.5 text-muted-foreground" />
-                              <span className="text-xs font-medium">{truck.fuelLevel}%</span>
-                            </div>
-                            <Progress 
-                              value={truck.fuelLevel} 
-                              className="h-1.5" 
-                              indicatorClassName={
-                                truck.fuelLevel < 30 ? "bg-red-600" :
-                                truck.fuelLevel < 50 ? "bg-amber-600" :
-                                "bg-green-600"
-                              }
-                            />
-                          </div>
-                        </TableCell>
+                        
+    <TableCell className="hidden lg:table-cell">
+      <div className="flex flex-col space-y-1">
+        <div className="flex items-center justify-between">
+          <Fuel className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-xs font-medium">{truck.fuelLevel}%</span>
+        </div>
+        <Progress 
+          value={truck.fuelLevel} 
+          className={`h-1.5 ${
+            truck.fuelLevel < 30 ? "bg-red-600" :
+            truck.fuelLevel < 50 ? "bg-amber-600" :
+            "bg-green-600"
+          }`}
+        />
+      </div>
+    </TableCell>
+
                         <TableCell className="hidden xl:table-cell">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
@@ -554,36 +554,38 @@ const Trucks = () => {
                     <h4 className="text-sm font-medium">Average Fuel Efficiency</h4>
                     <span className="text-sm font-medium">8.2 km/l</span>
                   </div>
-                  <div className="space-y-2">
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs">4x4 SUVs</span>
-                        <span className="text-xs font-medium">6.8 km/l</span>
-                      </div>
-                      <Progress value={68} className="h-1.5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs">Cargo Vans</span>
-                        <span className="text-xs font-medium">7.5 km/l</span>
-                      </div>
-                      <Progress value={75} className="h-1.5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs">Delivery Trucks</span>
-                        <span className="text-xs font-medium">5.2 km/l</span>
-                      </div>
-                      <Progress value={52} className="h-1.5" />
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs">Heavy Trucks</span>
-                        <span className="text-xs font-medium">3.8 km/l</span>
-                      </div>
-                      <Progress value={38} className="h-1.5" />
-                    </div>
-                  </div>
+                  
+    <div className="space-y-2">
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs">4x4 SUVs</span>
+          <span className="text-xs font-medium">6.8 km/l</span>
+        </div>
+        <Progress value={68} className="h-1.5" />
+      </div>
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs">Cargo Vans</span>
+          <span className="text-xs font-medium">7.5 km/l</span>
+        </div>
+        <Progress value={75} className="h-1.5" />
+      </div>
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs">Delivery Trucks</span>
+          <span className="text-xs font-medium">5.2 km/l</span>
+        </div>
+        <Progress value={52} className="h-1.5" />
+      </div>
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs">Heavy Trucks</span>
+          <span className="text-xs font-medium">3.8 km/l</span>
+        </div>
+        <Progress value={38} className="h-1.5" />
+      </div>
+    </div>
+
                 </div>
 
                 <div>
