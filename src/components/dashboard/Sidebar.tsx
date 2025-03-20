@@ -5,18 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   BarChart3, 
   ClipboardList, 
-  FileWarning,
   Home, 
   Map, 
   Settings,
   ShieldAlert,
   Users,
-  PlusSquare,
   Activity,
   AlertTriangle,
   CheckCircle,
   Clock,
-  ChevronDown
+  ChevronDown,
+  User,
+  FileWarning,
+  Car
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -126,18 +127,22 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       to: "/dashboard/vendors",
       subItems: [
         { label: "All Vendors", to: "/dashboard/vendors" },
-        { label: "Add New Vendor", to: "/dashboard/vendors/new" },
-        { label: "Risk Assessment", to: "/dashboard/vendors/risk" }
+        { label: "Add New Vendor", to: "/dashboard/vendors/new" }
       ]
+    },
+    { 
+      icon: Car, 
+      label: "Trucks", 
+      to: "/dashboard/trucks"
     },
     { 
       icon: ClipboardList, 
       label: "Missions", 
       to: "/dashboard/missions",
       subItems: [
+        { label: "All Missions", to: "/dashboard/missions" },
         { label: "Active Missions", to: "/dashboard/missions?status=active" },
         { label: "Completed", to: "/dashboard/missions?status=completed" },
-        { label: "Planned", to: "/dashboard/missions?status=planned" },
         { label: "Create Mission", to: "/dashboard/missions/new" }
       ]
     },
@@ -147,8 +152,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       to: "/dashboard/tracking",
       subItems: [
         { label: "Live Map", to: "/dashboard/tracking" },
-        { label: "Geofencing", to: "/dashboard/tracking/geofencing" },
-        { label: "Route History", to: "/dashboard/tracking/history" }
+        { label: "Geofencing", to: "/dashboard/tracking/geofencing" }
       ]
     },
     { 
@@ -157,44 +161,36 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       to: "/dashboard/analytics",
       subItems: [
         { label: "Performance Metrics", to: "/dashboard/analytics" },
-        { label: "Export Reports", to: "/dashboard/analytics/export" },
-        { label: "Predictive Analytics", to: "/dashboard/analytics/predictions" }
+        { label: "Export Reports", to: "/dashboard/analytics/export" }
       ]
     },
     { 
       icon: FileWarning, 
-      label: "Incidents & Compliance", 
+      label: "Incidents", 
       to: "/dashboard/incidents",
       subItems: [
         { label: "Incident Reports", to: "/dashboard/incidents" },
-        { label: "Compliance Logs", to: "/dashboard/incidents/compliance" },
-        { label: "Risk Assessments", to: "/dashboard/incidents/risk" }
+        { label: "Compliance Logs", to: "/dashboard/incidents/compliance" }
       ]
     },
     { 
       icon: ShieldAlert, 
-      label: "Admin & Roles", 
+      label: "Admin", 
       to: "/dashboard/admin",
       subItems: [
         { label: "User Management", to: "/dashboard/admin" },
-        { label: "Role Assignment", to: "/dashboard/admin/roles" },
-        { label: "Security Logs", to: "/dashboard/admin/security" }
-      ]
-    },
-    { 
-      icon: PlusSquare, 
-      label: "Quick Add", 
-      to: "#",
-      subItems: [
-        { label: "New Mission", to: "/dashboard/missions/new" },
-        { label: "New Vendor", to: "/dashboard/vendors/new" },
-        { label: "Report Incident", to: "/dashboard/incidents/new" }
+        { label: "Role Assignment", to: "/dashboard/admin/roles" }
       ]
     },
     { 
       icon: Settings, 
       label: "Settings", 
       to: "/dashboard/settings" 
+    },
+    { 
+      icon: User, 
+      label: "Profile", 
+      to: "/dashboard/profile" 
     },
   ];
   
