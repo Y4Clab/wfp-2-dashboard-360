@@ -4,18 +4,19 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   BarChart3, 
-  Box, 
-  Briefcase, 
-  ChevronDown, 
   ClipboardList, 
   FileWarning,
   Home, 
   Map, 
   Settings,
   ShieldAlert,
-  Car,
-  Truck,
-  Users
+  Users,
+  PlusSquare,
+  Activity,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  ChevronDown
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -130,26 +131,6 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       ]
     },
     { 
-      icon: Truck, 
-      label: "Fleet Management", 
-      to: "/dashboard/trucks",
-      subItems: [
-        { label: "All Trucks", to: "/dashboard/trucks" },
-        { label: "Add New Truck", to: "/dashboard/trucks/new" },
-        { label: "Maintenance Schedule", to: "/dashboard/trucks/maintenance" }
-      ]
-    },
-    { 
-      icon: Car, 
-      label: "Driver Management", 
-      to: "/dashboard/drivers",
-      subItems: [
-        { label: "All Drivers", to: "/dashboard/drivers" },
-        { label: "Add New Driver", to: "/dashboard/drivers/new" },
-        { label: "Performance Tracking", to: "/dashboard/drivers/performance" }
-      ]
-    },
-    { 
       icon: ClipboardList, 
       label: "Missions", 
       to: "/dashboard/missions",
@@ -198,6 +179,16 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         { label: "User Management", to: "/dashboard/admin" },
         { label: "Role Assignment", to: "/dashboard/admin/roles" },
         { label: "Security Logs", to: "/dashboard/admin/security" }
+      ]
+    },
+    { 
+      icon: PlusSquare, 
+      label: "Quick Add", 
+      to: "#",
+      subItems: [
+        { label: "New Mission", to: "/dashboard/missions/new" },
+        { label: "New Vendor", to: "/dashboard/vendors/new" },
+        { label: "Report Incident", to: "/dashboard/incidents/new" }
       ]
     },
     { 
