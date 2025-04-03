@@ -11,21 +11,23 @@ const Index = () => {
       <header className="w-full border-b bg-white/80 backdrop-blur-md z-10 fixed top-0 left-0">
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center h-8 w-8 rounded-md bg-wfp-blue text-white font-semibold">
-              WFP
-            </div>
-            <span className="text-lg font-semibold">WFP Admin Portal</span>
+            <Link to="/" className="flex items-center gap-2">
+              <div className="flex items-center justify-center h-8 w-8 rounded-md bg-wfp-blue text-white font-semibold">
+                WFP
+              </div>
+              <span className="text-lg font-semibold">WFP Admin Portal</span>
+            </Link>
           </div>
           <nav className="hidden md:flex gap-6 items-center">
-            <Link to="#features" className="text-sm font-medium transition-colors hover:text-wfp-blue">
+            <a href="#features" className="text-sm font-medium transition-colors hover:text-wfp-blue">
               Features
-            </Link>
-            <Link to="#security" className="text-sm font-medium transition-colors hover:text-wfp-blue">
+            </a>
+            <a href="#security" className="text-sm font-medium transition-colors hover:text-wfp-blue">
               Security
-            </Link>
-            <Link to="#about" className="text-sm font-medium transition-colors hover:text-wfp-blue">
+            </a>
+            <a href="#about" className="text-sm font-medium transition-colors hover:text-wfp-blue">
               About
-            </Link>
+            </a>
             <Link to="/login">
               <Button variant="outline" className="rounded-full">
                 Log In
@@ -64,11 +66,11 @@ const Index = () => {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link to="#features">
+              <a href="#features">
                 <Button variant="outline" size="lg" className="rounded-full px-8">
                   Learn More
                 </Button>
-              </Link>
+              </a>
             </div>
           </motion.div>
 
@@ -170,7 +172,7 @@ const Index = () => {
             <p className="max-w-2xl mx-auto mb-8 text-white/80">
               Join the WFP Admin Portal to streamline your food distribution operations with our intelligent management system.
             </p>
-            <Link to="/login">
+            <Link to="/signup">
               <Button variant="secondary" size="lg" className="rounded-full px-8">
                 Get Started Now
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -185,19 +187,21 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-6 md:mb-0">
-              <div className="flex items-center justify-center h-8 w-8 rounded-md bg-white text-wfp-blue font-semibold">
-                WFP
-              </div>
-              <span className="text-lg font-semibold">WFP Admin Portal</span>
+              <Link to="/" className="flex items-center gap-2">
+                <div className="flex items-center justify-center h-8 w-8 rounded-md bg-white text-wfp-blue font-semibold">
+                  WFP
+                </div>
+                <span className="text-lg font-semibold">WFP Admin Portal</span>
+              </Link>
             </div>
             <div className="flex flex-col md:flex-row gap-4 md:gap-8">
-              <Link to="#" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
                 Terms of Service
-              </Link>
-              <Link to="#" className="text-sm text-gray-400 hover:text-white transition-colors">
+              </a>
+              <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
                 Privacy Policy
-              </Link>
-              <Link to="#" className="text-sm text-gray-400 hover:text-white transition-colors">
+              </a>
+              <Link to="/login" className="text-sm text-gray-400 hover:text-white transition-colors">
                 Contact Us
               </Link>
             </div>

@@ -9,11 +9,13 @@ import { Label } from '@/components/ui/label';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
 const MissionNew = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formState, setFormState] = useState<FormState>('idle');
   const form = useForm({
     defaultValues: {
@@ -28,18 +30,33 @@ const MissionNew = () => {
     }
   });
   
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log('Mission data:', data);
     setFormState('submitting');
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       setFormState('success');
+      
+      toast({
+        title: "Mission created successfully",
+        description: "The new mission has been added to the system."
+      });
+      
       // Navigate to missions list after successful submission
       setTimeout(() => {
-        navigate('/dashboard/missions?status=active');
-      }, 1500);
-    }, 2000);
+        navigate('/dashboard/missions');
+      }, 1000);
+    } catch (error) {
+      setFormState('error');
+      toast({
+        title: "Failed to create mission",
+        description: "There was an error creating the mission. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
   
   return (

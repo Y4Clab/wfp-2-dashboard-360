@@ -214,7 +214,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               isOpen={isOpen}
               isActive={
                 currentPath === item.to || 
-                (item.subItems && item.subItems.some(sub => currentPath.includes(sub.to)))
+                (item.subItems && item.subItems.some(sub => currentPath.includes(sub.to.split('?')[0])))
               }
               subItems={item.subItems}
             />
@@ -223,8 +223,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       </div>
       
       <div className="p-4 border-t">
-        <div className={cn(
-          "flex items-center p-3 transition-all rounded-lg",
+        <Link to="/dashboard/profile" className={cn(
+          "flex items-center p-3 transition-all rounded-lg hover:bg-wfp-blue/10",
           isOpen ? "justify-start" : "justify-center"
         )}>
           <img 
@@ -244,7 +244,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               <p className="text-xs text-muted-foreground">Admin</p>
             </motion.div>
           )}
-        </div>
+        </Link>
       </div>
     </motion.aside>
   );

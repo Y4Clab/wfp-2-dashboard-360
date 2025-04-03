@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -45,8 +45,9 @@ const App = () => (
               
               {/* Vendor Routes */}
               <Route path="vendors" element={<Vendors />} />
-              <Route path="vendors/new" element={<VendorForm />} />
+              <Route path="vendors/new" element={<VendorNew />} />
               <Route path="vendors/:id" element={<VendorDetail />} />
+              <Route path="vendors/:id/edit" element={<VendorForm />} />
               
               {/* Truck Routes */}
               <Route path="trucks" element={<Trucks />} />
@@ -55,8 +56,9 @@ const App = () => (
               
               {/* Mission Routes */}
               <Route path="missions" element={<Missions />} />
-              <Route path="missions/new" element={<MissionForm />} />
+              <Route path="missions/new" element={<MissionNew />} />
               <Route path="missions/:id" element={<MissionDetail />} />
+              <Route path="missions/:id/edit" element={<MissionForm />} />
               
               {/* Tracking Routes */}
               <Route path="tracking" element={<LiveTracking />} />
@@ -80,8 +82,8 @@ const App = () => (
             </Route>
             
             {/* Role-based dashboards */}
-            <Route path="/vendor-dashboard" element={<NotFound />} />
-            <Route path="/driver-dashboard" element={<NotFound />} />
+            <Route path="/vendor-dashboard" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/driver-dashboard" element={<Navigate to="/dashboard" replace />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
