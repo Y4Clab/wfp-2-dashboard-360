@@ -56,7 +56,7 @@ const App = () => (
               
               {/* Mission Routes */}
               <Route path="missions" element={<Missions />} />
-              <Route path="missions/new" element={<MissionNew />} />
+              <Route path="missions/new" element={<MissionForm />} />
               <Route path="missions/:id" element={<MissionDetail />} />
               <Route path="missions/:id/edit" element={<MissionForm />} />
               

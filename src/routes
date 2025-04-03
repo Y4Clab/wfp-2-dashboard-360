@@ -1,0 +1,78 @@
+http://127.0.0.1:8000/api/missions/
+creates mission in post request the following request body
+{
+    "title": "",
+    "type": null,
+    "number_of_beneficiaries": null,
+    "description": "",
+    "dept_location": "",
+    "destination_location": "",
+    "start_date": null,
+    "end_date": null,
+    "status": null
+}
+
+http://127.0.0.1:8000/api/vendor-missions/
+assigns a vendor to a mission in post request the following request body
+here vendor and mission are unique ids in UUID
+{
+    "vendor": null,
+    "mission": null
+}
+
+http://127.0.0.1:8000/api/cargo/
+creates cargo in post request the following request body
+here mission is a unique id in UUID
+{
+    "mission": null,
+    "total_products_quantity": null
+}
+
+http://127.0.0.1:8000/api/cargo-items/
+creates cargo items in post request the following request body
+here cargo and product are unique ids in UUID
+{
+    "cargo": null,
+    "product": null,
+    "quantity": null
+}
+
+http://127.0.0.1:8000/api/products/
+gets all products in get request. returns a list of products with the following fields:
+{
+    "id": 1,
+    "unique_id": "ec3e0ec3-f8d8-4610-967c-1c1c83ba613e",
+    "name": "mango",
+    "quantity": 120
+}
+
+http://127.0.0.1:8000/api/products/
+creates product in post request the following request body
+{
+    "name": "",
+    "quantity": null
+}
+
+http://127.0.0.1:8000/api/vendors/
+gets all vendors in get request. returns a list of vendors with the following fields:
+{
+    "id": 1,
+    "unique_id": "8577eae3-4133-45de-b30d-4f1b8f2a8cd4",
+    "name": "pascod",
+    "reg_no": "T123",
+    "vendor_type": "food_supplier",
+    "fleet_size": 120,
+    "description": "wazuri",
+    "status": "pending"
+}
+
+http://127.0.0.1:8000/api/vendors/
+creates vendor in post request the following request body
+{
+    "name": "",
+    "reg_no": "",
+    "vendor_type": null,
+    "fleet_size": null,
+    "description": "",
+    "status": null
+}
