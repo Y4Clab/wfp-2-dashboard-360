@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -133,7 +132,13 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     { 
       icon: Car, 
       label: "Trucks", 
-      to: "/dashboard/trucks"
+      to: "/dashboard/trucks",
+      subItems: [
+        { label: "All Vehicles", to: "/dashboard/trucks" },
+        { label: "Add New Vehicle", to: "/dashboard/trucks/new" },
+        { label: "Track Mission", to: "/dashboard/tracking/new" },
+        { label: "Service Records", to: "/dashboard/trucks/service" }
+      ]
     },
     { 
       icon: ClipboardList, 

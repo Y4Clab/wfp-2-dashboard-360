@@ -1,7 +1,7 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { AlertTriangle, CheckCircle, Clock, Filter, Search } from "lucide-react";
+import { AlertTriangle, CheckCircle, Clock, Filter, Search, Plus } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,6 +69,7 @@ const TRUCKS = [
 ];
 
 const LiveTracking = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -109,11 +110,13 @@ const LiveTracking = () => {
       transition={{ duration: 0.3 }}
       className="space-y-8"
     >
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Live Tracking</h1>
-        <p className="text-muted-foreground">
-          Monitor your fleet and deliveries in real-time
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Live Tracking</h1>
+          <p className="text-muted-foreground">
+            Monitor your fleet and deliveries in real-time
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -211,9 +214,11 @@ const LiveTracking = () => {
                         <div className="col-span-2">{truck.destination}</div>
                         <div className="col-span-1">{truck.eta}</div>
                         <div className="col-span-1">
-                          <Button variant="outline" size="sm">
-                            Details
-                          </Button>
+                          <div className="flex items-center gap-1">
+                            <Button variant="outline" size="sm">
+                              Details
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))
@@ -280,9 +285,11 @@ const LiveTracking = () => {
                           </div>
                           
                           <div className="mt-4">
-                            <Button variant="outline" size="sm" className="w-full">
-                              View Details
-                            </Button>
+                            <div className="flex gap-2">
+                              <Button variant="outline" size="sm" className="flex-1">
+                                View Details
+                              </Button>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>

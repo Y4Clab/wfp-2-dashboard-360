@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,7 +12,9 @@ import Vendors from "./pages/Vendors";
 import VendorDetail from "./pages/VendorDetail";
 import VendorNew from "./pages/VendorNew";
 import VendorForm from "./pages/VendorForm";
-import Trucks from "./pages/Trucks";
+import Trucks from "./pages/Trucks/Trucks";
+import TruckNew from "./pages/Trucks/TruckNew";
+import TruckService from "./pages/Trucks/TruckService";
 import Missions from "./pages/Missions";
 import MissionDetail from "./pages/MissionDetail";
 import MissionNew from "./pages/MissionNew";
@@ -22,6 +23,7 @@ import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import LiveTracking from "./pages/LiveTracking";
+import TrackMission from "./pages/Trucks/TrackMission";
 import NotFound from "./pages/NotFound";
 import DashboardLayout from "./layouts/DashboardLayout";
 
@@ -51,7 +53,8 @@ const App = () => (
               
               {/* Truck Routes */}
               <Route path="trucks" element={<Trucks />} />
-              <Route path="trucks/new" element={<NotFound />} />
+              <Route path="trucks/new" element={<TruckNew />} />
+              <Route path="trucks/service" element={<TruckService />} />
               <Route path="trucks/:id" element={<NotFound />} />
               
               {/* Mission Routes */}
@@ -62,7 +65,8 @@ const App = () => (
               
               {/* Tracking Routes */}
               <Route path="tracking" element={<LiveTracking />} />
-              <Route path="tracking/geofencing" element={<NotFound />} />
+              <Route path="tracking/new" element={<TrackMission />} />
+              
               
               {/* Analytics Routes */}
               <Route path="analytics" element={<Analytics />} />
