@@ -1,69 +1,90 @@
-# Welcome to your Lovable project
+# WFP Admin Portal
 
-## Project info
+A comprehensive dashboard application for managing World Food Programme operations, built with React and TypeScript.
 
-**URL**: https://lovable.dev/projects/f0064bd7-bc7c-49aa-9dce-f1f1891267bd
+## Features
 
-## How can I edit this code?
+- 🚚 Fleet and mission management
+- 👥 Vendor management system
+- 📦 Inventory tracking
+- 🗺️ Real-time mission tracking
+- 📊 Analytics and reporting
+- 🔐 Secure authentication
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- React 18
+- TypeScript
+- React Router v6
+- React Query
+- Tailwind CSS
+- Framer Motion
+- Shadcn UI
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f0064bd7-bc7c-49aa-9dce-f1f1891267bd) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js 16+
+- npm or yarn
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/wfp-admin-portal.git
+cd wfp-admin-portal
 ```
 
-**Edit a file directly in GitHub**
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Set up environment variables
+```bash
+cp .env.example .env
+```
 
-**Use GitHub Codespaces**
+4. Start the development server
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+For detailed documentation about the project structure and implementation details, please refer to [CODEBASE.md](CODEBASE.md).
 
-This project is built with .
+## Available Scripts
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run test` - Run tests
+- `npm run typecheck` - Run TypeScript type checking
 
-## How can I deploy this project?
+## Contributing
 
-Simply open [Lovable](https://lovable.dev/projects/f0064bd7-bc7c-49aa-9dce-f1f1891267bd) and click on Share -> Publish.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## I want to use a custom domain - is that possible?
+## License
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- World Food Programme
+- React Team
+- Shadcn UI
+- All contributors
+
+For more detailed documentation, please refer to [CODEBASE.md](CODEBASE.md).
