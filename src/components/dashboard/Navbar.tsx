@@ -1,4 +1,3 @@
-
 import { Bell, Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -23,8 +22,8 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 bg-white/80 backdrop-blur-md shadow-subtle border-b">
-      <div className="h-16 px-4 sm:px-6 flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-subtle border-b h-16">
+      <div className="h-full px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center">
           <Button
             variant="ghost"

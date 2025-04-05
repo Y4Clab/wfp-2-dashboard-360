@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Link } from "react-router-dom";
 
 // Mock data for trucks
 const TRUCKS_DATA = [
@@ -241,10 +242,12 @@ const Trucks = () => {
             Monitor, maintain, and track your fleet of delivery vehicles
           </p>
         </div>
+        <Link to="/dashboard/trucks/new">
         <Button className="flex items-center gap-2">
           <Plus size={16} />
           <span>Add Vehicle</span>
         </Button>
+        </Link>
       </div>
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">

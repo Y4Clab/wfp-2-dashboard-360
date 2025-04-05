@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -25,10 +24,11 @@ const DashboardLayout = () => {
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 pt-16">
+        <div className={`flex-shrink-0 transition-all duration-300 ${isSidebarOpen ? 'w-[280px]' : 'w-[80px]'}`} />
         <Sidebar isOpen={isSidebarOpen} />
         
-        <main className={`flex-1 transition-all duration-300 overflow-y-auto p-6 pt-24 md:p-8 md:pt-28`}>
+        <main className={`flex-1 transition-all duration-300 overflow-y-auto p-6 md:p-8`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -36,7 +36,7 @@ const DashboardLayout = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
-              className="container mx-auto h-full"
+              className="container mx-auto"
             >
               <Outlet />
             </motion.div>
