@@ -1,13 +1,37 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { AlertTriangle, CheckCircle, Clock, Filter, Search, Plus } from "lucide-react";
+import { AlertTriangle, CheckCircle, Clock, Filter, Search, Plus, Package, X } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+// Define cargo item interface
+interface CargoItem {
+  id: string;
+  name: string;
+  quantity: number;
+  unit: string;
+}
 
 // Mock data for trucks
 const TRUCKS = [
@@ -20,7 +44,12 @@ const TRUCKS = [
     destination: "Kakuma Refugee Camp",
     eta: "2 hours",
     updatedAt: "5 minutes ago",
-    progress: 65
+    progress: 65,
+    cargo_items: [
+      { id: "c1", name: "Maize", quantity: 5000, unit: "kg" },
+      { id: "c2", name: "Beans", quantity: 3000, unit: "kg" },
+      { id: "c3", name: "Cooking Oil", quantity: 1000, unit: "L" }
+    ]
   },
   { 
     id: "TRK-1002", 
@@ -31,7 +60,12 @@ const TRUCKS = [
     destination: "Dire Dawa",
     eta: "3.5 hours",
     updatedAt: "2 minutes ago",
-    progress: 42
+    progress: 42,
+    cargo_items: [
+      { id: "c4", name: "Rice", quantity: 4000, unit: "kg" },
+      { id: "c5", name: "Sugar", quantity: 2000, unit: "kg" },
+      { id: "c6", name: "Salt", quantity: 500, unit: "kg" }
+    ]
   },
   { 
     id: "TRK-1003", 
@@ -42,7 +76,11 @@ const TRUCKS = [
     destination: "Garissa",
     eta: "5 hours (delayed)",
     updatedAt: "13 minutes ago",
-    progress: 28
+    progress: 28,
+    cargo_items: [
+      { id: "c7", name: "Wheat Flour", quantity: 6000, unit: "kg" },
+      { id: "c8", name: "Lentils", quantity: 2000, unit: "kg" }
+    ]
   },
   { 
     id: "TRK-1004", 
@@ -53,7 +91,12 @@ const TRUCKS = [
     destination: "Bor",
     eta: "Delivered",
     updatedAt: "1 hour ago",
-    progress: 100
+    progress: 100,
+    cargo_items: [
+      { id: "c9", name: "Sorghum", quantity: 3000, unit: "kg" },
+      { id: "c10", name: "Millet", quantity: 2000, unit: "kg" },
+      { id: "c11", name: "Vegetable Oil", quantity: 1500, unit: "L" }
+    ]
   },
   { 
     id: "TRK-1005", 
@@ -64,7 +107,11 @@ const TRUCKS = [
     destination: "Kismayo",
     eta: "4 hours",
     updatedAt: "7 minutes ago",
-    progress: 35
+    progress: 35,
+    cargo_items: [
+      { id: "c12", name: "Corn Soya Blend", quantity: 5000, unit: "kg" },
+      { id: "c13", name: "Dried Fish", quantity: 1000, unit: "kg" }
+    ]
   },
 ];
 
@@ -72,6 +119,8 @@ const LiveTracking = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedTruck, setSelectedTruck] = useState<typeof TRUCKS[0] | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const filteredTrucks = TRUCKS.filter(truck => {
     const matchesSearch = 
@@ -101,6 +150,16 @@ const LiveTracking = () => {
       case "completed": return <CheckCircle className="h-4 w-4" />;
       default: return null;
     }
+  };
+
+  const openDetailsModal = (truck: typeof TRUCKS[0]) => {
+    setSelectedTruck(truck);
+    setIsDetailsOpen(true);
+  };
+
+  const closeDetailsModal = () => {
+    setIsDetailsOpen(false);
+    setSelectedTruck(null);
   };
 
   return (
@@ -215,7 +274,11 @@ const LiveTracking = () => {
                         <div className="col-span-1">{truck.eta}</div>
                         <div className="col-span-1">
                           <div className="flex items-center gap-1">
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => openDetailsModal(truck)}
+                            >
                               Details
                             </Button>
                           </div>
@@ -265,6 +328,10 @@ const LiveTracking = () => {
                               <span className="text-muted-foreground">ETA:</span>
                               <span>{truck.eta}</span>
                             </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Cargo Items:</span>
+                              <span>{truck.cargo_items.length} items</span>
+                            </div>
                           </div>
                           
                           <div className="space-y-2">
@@ -286,7 +353,12 @@ const LiveTracking = () => {
                           
                           <div className="mt-4">
                             <div className="flex gap-2">
-                              <Button variant="outline" size="sm" className="flex-1">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="flex-1"
+                                onClick={() => openDetailsModal(truck)}
+                              >
                                 View Details
                               </Button>
                             </div>
@@ -301,6 +373,100 @@ const LiveTracking = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Truck Details Modal */}
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center justify-between">
+              <span>Truck Details</span>
+              <Button variant="ghost" size="icon" onClick={closeDetailsModal}>
+                <X className="h-4 w-4" />
+              </Button>
+            </DialogTitle>
+            <DialogDescription>
+              Detailed information about the selected truck and its cargo
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedTruck && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <h3 className="font-medium">Truck Information</h3>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div className="text-muted-foreground">Truck ID:</div>
+                    <div className="font-medium">{selectedTruck.id}</div>
+                    <div className="text-muted-foreground">Driver:</div>
+                    <div className="font-medium">{selectedTruck.driver}</div>
+                    <div className="text-muted-foreground">Status:</div>
+                    <div>
+                      <Badge variant="outline" className={`${getStatusColor(selectedTruck.status)} flex items-center gap-1 w-fit`}>
+                        {getStatusIcon(selectedTruck.status)}
+                        <span className="capitalize">{selectedTruck.status}</span>
+                      </Badge>
+                    </div>
+                    <div className="text-muted-foreground">Mission:</div>
+                    <div className="font-medium">{selectedTruck.mission}</div>
+                    <div className="text-muted-foreground">Location:</div>
+                    <div>{selectedTruck.location}</div>
+                    <div className="text-muted-foreground">Destination:</div>
+                    <div>{selectedTruck.destination}</div>
+                    <div className="text-muted-foreground">ETA:</div>
+                    <div>{selectedTruck.eta}</div>
+                    <div className="text-muted-foreground">Progress:</div>
+                    <div>{selectedTruck.progress}%</div>
+                    <div className="text-muted-foreground">Last Updated:</div>
+                    <div>{selectedTruck.updatedAt}</div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <h3 className="font-medium">Cargo Information</h3>
+                  <div className="text-sm">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-muted-foreground">Total Items:</span>
+                      <span className="font-medium">{selectedTruck.cargo_items.length}</span>
+                    </div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-muted-foreground">Total Weight:</span>
+                      <span className="font-medium">
+                        {selectedTruck.cargo_items.reduce((sum, item) => sum + item.quantity, 0)} kg
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4">
+                    <h4 className="text-sm font-medium mb-2">Cargo Items</h4>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Item</TableHead>
+                          <TableHead>Quantity</TableHead>
+                          <TableHead>Unit</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {selectedTruck.cargo_items.map((item) => (
+                          <TableRow key={item.id}>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell>{item.quantity}</TableCell>
+                            <TableCell>{item.unit}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={closeDetailsModal}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };

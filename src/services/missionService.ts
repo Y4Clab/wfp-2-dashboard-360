@@ -12,6 +12,30 @@ const VENDORS_URL = `${API_BASE_URL}/vendors/`;
 const TRUCKS_URL = `${API_BASE_URL}/trucks/`;
 const TRUCK_MISSIONS_URL = `${API_BASE_URL}/truck-missions/`;
 
+// Re-export the Product interface
+export type { Product };
+
+// Define Mission interface
+export interface Mission {
+  id: string;
+  title: string;
+  type: string;
+  number_of_beneficiaries: number;
+  description: string;
+  dept_location: string;
+  destination_location: string;
+  start_date: string;
+  end_date: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// Fetch all missions
+export const fetchMissions = async (): Promise<Mission[]> => {
+  const response = await axios.get<Mission[]>(MISSIONS_URL);
+  return response.data;
+};
 
 export const fetchProducts = async (): Promise<Product[]> => {
   const response = await axios.get<Product[]>(PRODUCTS_URL);

@@ -167,6 +167,11 @@ const Trucks = () => {
               <span>Add New Vehicle</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => navigate("/dashboard/trucks/mission")}>
+              <MapPin className="mr-2 h-4 w-4" />
+              <span>Assign to Mission</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate("/dashboard/tracking/new")}>
               <MapPin className="mr-2 h-4 w-4" />
               <span>Track Mission</span>

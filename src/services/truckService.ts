@@ -5,11 +5,31 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://192.168.100.4:
 const TRUCKS_URL = `${API_BASE_URL}/trucks/`;
 const TRUCK_MISSIONS_URL = `${API_BASE_URL}/truck-missions/`;
 
+// Define cargo item interface
+export interface CargoItem {
+  name: string;
+  quantity: number;
+  unit: string;
+}
+
+// Define truck mission assignment interface
+export interface TruckMissionAssignment {
+  mission: number;
+  truck: number;
+  cargo_items: CargoItem[];
+}
+
 // Define truck types
 export interface Truck {
   id: string;
   vehicle_name: string;
+  plate_number: string;
   vendor: string | null;
+  capacity_tons: number;
+  model?: string;
+  year?: number;
+  registration_document?: string;
+  insurance_document?: string;
   status: string;
   location?: string;
   last_maintenance?: string;
@@ -30,7 +50,13 @@ export const fetchTrucks = async (): Promise<Truck[]> => {
 // Add a new truck
 export const addTruck = async (truckData: {
   vehicle_name: string;
+  plate_number: string;
   vendor: string | null;
+  capacity_tons: number;
+  model?: string;
+  year?: number;
+  registration_document?: string;
+  insurance_document?: string;
   status: string;
 }): Promise<Truck> => {
   const response = await axios.post<Truck>(TRUCKS_URL, truckData);
@@ -43,12 +69,11 @@ export const updateTruckStatus = async (truckId: string, status: string): Promis
   return response.data;
 };
 
-// Assign truck to mission
-export const assignTruckToMission = async (truckId: string, missionId: string): Promise<void> => {
-  await axios.post(TRUCK_MISSIONS_URL, {
-    truck: truckId,
-    mission: missionId
-  });
+// Assign truck to mission with cargo items
+export const assignTruckToMission = async (assignmentData: TruckMissionAssignment): Promise<void> => {
+  console.log("Assigning truck to mission with data:", assignmentData);
+  const response = await axios.post(TRUCK_MISSIONS_URL, assignmentData);
+  return response.data;
 };
 
 // Get trucks by vendor

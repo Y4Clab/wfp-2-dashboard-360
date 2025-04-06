@@ -15,6 +15,7 @@ import VendorForm from "./pages/VendorForm";
 import Trucks from "./pages/Trucks/Trucks";
 import TruckNew from "./pages/Trucks/TruckNew";
 import TruckService from "./pages/Trucks/TruckService";
+import TruckMission from "./pages/Trucks/TruckMission";
 import Missions from "./pages/Missions";
 import MissionDetail from "./pages/MissionDetail";
 import MissionNew from "./pages/MissionNew";
@@ -55,6 +56,7 @@ const App = () => (
               <Route path="trucks" element={<Trucks />} />
               <Route path="trucks/new" element={<TruckNew />} />
               <Route path="trucks/service" element={<TruckService />} />
+              <Route path="trucks/mission" element={<TruckMission />} />
               <Route path="trucks/:id" element={<NotFound />} />
               
               {/* Mission Routes */}
