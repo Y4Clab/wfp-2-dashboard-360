@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MissionStatus, MissionPriority, MissionType } from "@/types/mission";
+import { MissionStatus, MissionPriority, MissionType } from "@/features/missions/types/mission.types";
 
 interface MissionFiltersProps {
   searchQuery: string;
@@ -56,8 +56,8 @@ const MissionFilters = ({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="Active">Active</SelectItem>
+            <SelectItem value="Completed">Completed</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
           </SelectContent>
         </Select>

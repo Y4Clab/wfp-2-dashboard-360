@@ -1,9 +1,9 @@
-import { Bell, Menu, Search, X } from "lucide-react";
+import { Bell, LogOut, Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -12,15 +12,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useAuth } from "@/features/auth/context/AuthContext";
+import { cn } from "@/lib/utils";
 interface NavbarProps {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
-const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
+const Navbar = ({  toggleSidebar }: NavbarProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  
+  const { user, logout } = useAuth();
+  const isVendor = user?.user_role.role_name === "vendor";
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-subtle border-b h-16">
       <div className="h-full px-4 sm:px-6 flex items-center justify-between">
@@ -34,19 +37,21 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>
           </Button>
-          
+
           <Link to="/dashboard" className="flex items-center gap-2 mr-8">
             <div className="flex items-center justify-center h-8 w-8 rounded-md bg-wfp-blue text-white font-semibold">
               WFP
             </div>
-            <span className="text-lg font-semibold hidden md:block">WFP Admin</span>
+            <span className="text-lg font-semibold hidden md:block">
+              {isVendor ? "Vendor Portal" : "WFP Admin"}
+            </span>
           </Link>
         </div>
-        
+
         <div className="flex-1 flex justify-end md:justify-center">
           <AnimatePresence>
             {isSearchOpen ? (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, width: 0 }}
                 animate={{ opacity: 1, width: "100%", maxWidth: "600px" }}
                 exit={{ opacity: 0, width: 0 }}
@@ -55,7 +60,11 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
               >
                 <Input
                   autoFocus
-                  placeholder="Search..."
+                  placeholder={
+                    isVendor
+                      ? "Search your missions..."
+                      : "Search missions, vendors..."
+                  }
                   className="w-full rounded-full pr-10"
                 />
                 <button
@@ -73,8 +82,8 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
                 transition={{ duration: 0.2 }}
                 className="hidden md:flex md:items-center"
               >
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   size="icon"
                   onClick={() => setIsSearchOpen(true)}
                 >
@@ -84,17 +93,17 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
             )}
           </AnimatePresence>
         </div>
-        
+
         <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
             className="md:hidden"
             onClick={() => setIsSearchOpen(!isSearchOpen)}
           >
             <Search className="h-5 w-5" />
           </Button>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
@@ -107,10 +116,23 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
               <DropdownMenuSeparator />
               <div className="max-h-80 overflow-y-auto">
                 {[1, 2, 3].map((i) => (
-                  <DropdownMenuItem key={i} className="flex flex-col items-start py-2 cursor-pointer">
-                    <p className="font-medium">Mission Update</p>
-                    <p className="text-sm text-muted-foreground">Truck TRK-{i}234 has arrived at checkpoint {i}.</p>
-                    <p className="text-xs text-muted-foreground mt-1">{i}0 minutes ago</p>
+                  <DropdownMenuItem
+                    key={i}
+                    className="flex flex-col items-start py-2 cursor-pointer"
+                  >
+                    <p className="font-medium">
+                      {isVendor
+                        ? `Mission Update #${i}`
+                        : `System Update #${i}`}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {isVendor
+                        ? `Your truck TRK-${i}234 has arrived at checkpoint ${i}.`
+                        : `New vendor registration pending approval.`}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {i}0 minutes ago
+                    </p>
                   </DropdownMenuItem>
                 ))}
               </div>
@@ -120,28 +142,21 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <img 
-                  src="https://randomuser.me/api/portraits/men/32.jpg" 
-                  alt="User"
-                  className="h-8 w-8 rounded-full" 
-                />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link to="/login" className="w-full">Log out</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+
+         
+          <Button
+          variant="ghost"
+          className={cn(
+            "w-full flex items-center gap-2 justify-center hover:bg-red-50 hover:text-red-600"
+          )}
+          onClick={logout}
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Logout</span>
+        </Button>
+           
+             
+             
         </div>
       </div>
     </header>

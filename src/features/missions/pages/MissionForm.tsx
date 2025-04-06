@@ -22,7 +22,7 @@ import {
   CargoValues,
   Product,
   Vendor
-} from "@/types/mission-form";
+} from "@/features/missions/types/mission-form";
 
 // Import services
 import {

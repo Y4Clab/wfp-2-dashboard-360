@@ -36,7 +36,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { MissionFormValues, Vendor } from "@/types/mission-form";
+import { MissionFormValues, Vendor } from "@/features/missions/types/mission-form";
 
 interface MissionDetailsFormProps {
   form: UseFormReturn<MissionFormValues>;

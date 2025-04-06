@@ -1,14 +1,16 @@
 import axios from "axios";
-import { MissionDetailsValues, CargoValues, Product, Vendor } from "@/types/mission-form";
+import { MissionDetailsValues, CargoValues, Product, Vendor } from "@/features/missions/types/mission-form";
+import { Mission } from "../types/mission.types";
 
 // Define API URLs
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://192.168.0.16:8000/api";
-const MISSIONS_URL = `${API_BASE_URL}/missions/`;
-const VENDOR_MISSIONS_URL = `${API_BASE_URL}/vendor-missions/`;
-const CARGO_URL = `${API_BASE_URL}/cargo/`;
-const CARGO_ITEMS_URL = `${API_BASE_URL}/cargo-items/`;
-const PRODUCTS_URL = `${API_BASE_URL}/products/`;
-const VENDORS_URL = `${API_BASE_URL}/vendors/`;
+const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
+const MISSIONS_URL = `${API_BASE_URL}/api/missions/`;
+
+const VENDOR_MISSIONS_URL = `${API_BASE_URL}/api/vendor-missions/`;
+const CARGO_URL = `${API_BASE_URL}/api/cargo/`;
+const CARGO_ITEMS_URL = `${API_BASE_URL}/api/cargo-items/`;
+const PRODUCTS_URL = `${API_BASE_URL}/api/products/`;
+const VENDORS_URL = `${API_BASE_URL}/api/vendors/`;
 
 export const fetchProducts = async (): Promise<Product[]> => {
   const response = await axios.get<Product[]>(PRODUCTS_URL);
@@ -51,7 +53,7 @@ export const assignVendorToMission = async (vendorId: string, missionId: string,
   if (selectedVendor) {
     console.log("Assigning vendor:", vendorId, "to mission:", missionId);
     const response = await axios.post(VENDOR_MISSIONS_URL, {
-      vendor: selectedVendor.id, // Use the numeric id instead of the UUID
+      vendor: selectedVendor.id, 
       mission: missionId
     });
     return response.data;
@@ -114,3 +116,16 @@ export const addCargoToMission = async (
   
   return;
 }; 
+
+//get all missions
+export const getMissions = async (): Promise<Mission[]> => {
+  const response = await axios.get<Mission[]>(MISSIONS_URL);
+  return response.data;
+};
+
+//get mission by id
+export const getMissionById = async (id: string): Promise<Mission> => {
+  const response = await axios.get<Mission>(`${MISSIONS_URL}${id}`);
+  return response.data;
+};
+

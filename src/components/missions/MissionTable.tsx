@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Mission } from "@/types/mission";
+import { Mission } from "@/features/missions/types/mission.types";
 
 interface MissionTableProps {
   missions: Mission[];
@@ -33,7 +33,8 @@ const MissionTable = ({ missions, loading, error }: MissionTableProps) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
+            <TableHead>#</TableHead>
+            
             <TableHead>Mission</TableHead>
             <TableHead className="hidden md:table-cell">From</TableHead>
             <TableHead className="hidden md:table-cell">To</TableHead>
@@ -61,9 +62,10 @@ const MissionTable = ({ missions, loading, error }: MissionTableProps) => {
               </TableCell>
             </TableRow>
           ) : missions.length > 0 ? (
-            missions.map((mission) => (
+            missions.map((mission, index) => (
               <TableRow key={mission.id}>
-                <TableCell className="font-medium">{mission.id ? mission.id : 'N/A'}</TableCell>
+                <TableCell>{index + 1}</TableCell>
+                
                 <TableCell>
                   <div>
                     <p className="font-medium">{mission.title || 'Untitled Mission'}</p>

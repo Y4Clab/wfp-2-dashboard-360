@@ -49,4 +49,6 @@ export const useDeleteVendor = () => {
       queryClient.invalidateQueries({ queryKey: ['vendors'] });
     },
   });
-}; 
+};
+
+export * from './useVendors';

@@ -25,10 +25,10 @@ const DashboardLayout = () => {
       />
       
       <div className="flex flex-1 pt-16">
-        <div className={`flex-shrink-0 transition-all duration-300 ${isSidebarOpen ? 'w-[280px]' : 'w-[80px]'}`} />
+        <div className={`flex-shrink-0 transition-all duration-300 ${isSidebarOpen ? 'w-[250px]' : 'w-[150px]'}`} />
         <Sidebar isOpen={isSidebarOpen} />
         
-        <main className={`flex-1 transition-all duration-300 overflow-y-auto p-6 md:p-8`}>
+        <main className={`flex-1 transition-all duration-300 overflow-y-auto p-2 md:p-8`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
