@@ -12,7 +12,7 @@ interface PredictionProps {
   confidence: number;
   actionable: boolean;
   mission?: string;
-}
+}  
 
 const predictions: PredictionProps[] = [
   {
@@ -24,7 +24,7 @@ const predictions: PredictionProps[] = [
     actionable: true,
     mission: 'M-7892'
   },
-  {
+  { 
     id: 'PRED-002',
     type: 'risk',
     description: 'Increased security risk detected on Route R-45 due to recent incidents',

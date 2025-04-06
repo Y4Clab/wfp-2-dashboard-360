@@ -2,7 +2,7 @@ import axios from "axios";
 import { MissionDetailsValues, CargoValues, Product, Vendor } from "@/types/mission-form";
 
 // Define API URLs
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://192.168.100.4:8000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://192.168.0.16:8000/api";
 const MISSIONS_URL = `${API_BASE_URL}/missions/`;
 const VENDOR_MISSIONS_URL = `${API_BASE_URL}/vendor-missions/`;
 const CARGO_URL = `${API_BASE_URL}/cargo/`;

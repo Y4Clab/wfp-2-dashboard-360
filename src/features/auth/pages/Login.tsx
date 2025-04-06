@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -156,6 +155,13 @@ const Login = () => {
             
             <div className="text-center text-sm text-muted-foreground">
               Demo credentials: <span className="font-medium">admin@wfp.org</span> / <span className="font-medium">password</span>
+            </div>
+
+            <div className="text-center text-sm">
+              Don't have an account?{" "}
+              <Link to="/register" className="text-wfp-blue hover:underline font-medium">
+                Sign up now
+              </Link>
             </div>
           </motion.form>
         </div>

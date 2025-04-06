@@ -17,7 +17,7 @@ import MissionStatistics from "@/components/missions/MissionStatistics";
 import RecentMissions from "@/components/missions/RecentMissions";
 
 // Define API URL
-const API_BASE_URL = "http://192.168.100.4:8000/api";
+const API_BASE_URL = "http://192.168.0.16:8000/api";
 const MISSIONS_URL = `${API_BASE_URL}/missions/`;
 
 const Missions = () => {
