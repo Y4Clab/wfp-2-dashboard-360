@@ -31,7 +31,7 @@ import {
   createMission,
   assignVendorToMission,
   addCargoToMission
-} from "@/services/missionService";
+} from "@/features/missions/services/missionService";
 
 const MissionForm = () => {
   const navigate = useNavigate();

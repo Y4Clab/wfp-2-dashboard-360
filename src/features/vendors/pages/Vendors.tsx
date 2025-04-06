@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -9,7 +8,8 @@ import {
   RefreshCw, 
   Search, 
   Trash, 
-  UserPlus 
+  UserPlus,
+  Loader2 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,146 +44,55 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-
-// Mock data for vendors
-const vendorsData = [
-  {
-    id: "V-001",
-    name: "Global Food Solutions",
-    type: "Food Supplier",
-    location: "Nairobi, Kenya",
-    contact: "John Doe",
-    email: "john@globalfood.com",
-    phone: "+254 712 345 678",
-    status: "approved",
-    rating: 4.8,
-    lastDelivery: "2023-07-12",
-  },
-  {
-    id: "V-002",
-    name: "MedTech Logistics",
-    type: "Medical Supplier",
-    location: "Kampala, Uganda",
-    contact: "Jane Smith",
-    email: "jane@medtech.com",
-    phone: "+256 782 123 456",
-    status: "approved",
-    rating: 4.5,
-    lastDelivery: "2023-07-10",
-  },
-  {
-    id: "V-003",
-    name: "BuildEx Construction",
-    type: "Construction Materials",
-    location: "Mogadishu, Somalia",
-    contact: "Ahmed Hassan",
-    email: "ahmed@buildex.com",
-    phone: "+252 612 789 012",
-    status: "pending",
-    rating: 3.9,
-    lastDelivery: "2023-07-05",
-  },
-  {
-    id: "V-004",
-    name: "Pure Water Inc.",
-    type: "Water Supplier",
-    location: "Addis Ababa, Ethiopia",
-    contact: "Mebratu Tekle",
-    email: "mebratu@purewater.com",
-    phone: "+251 912 345 678",
-    status: "approved",
-    rating: 4.7,
-    lastDelivery: "2023-07-08",
-  },
-  {
-    id: "V-005",
-    name: "FarmFresh Produce",
-    type: "Food Supplier",
-    location: "Dar es Salaam, Tanzania",
-    contact: "Grace Mwangi",
-    email: "grace@farmfresh.com",
-    phone: "+255 763 456 789",
-    status: "approved",
-    rating: 4.3,
-    lastDelivery: "2023-07-11",
-  },
-  {
-    id: "V-006",
-    name: "MobileTech Communications",
-    type: "Communications",
-    location: "Kigali, Rwanda",
-    contact: "Pascal Uwimana",
-    email: "pascal@mobiletech.com",
-    phone: "+250 783 567 890",
-    status: "suspended",
-    rating: 3.2,
-    lastDelivery: "2023-06-30",
-  },
-  {
-    id: "V-007",
-    name: "SafeShelter Solutions",
-    type: "Construction Materials",
-    location: "Juba, South Sudan",
-    contact: "David Malek",
-    email: "david@safeshelter.com",
-    phone: "+211 928 901 234",
-    status: "pending",
-    rating: 4.0,
-    lastDelivery: "2023-07-02",
-  },
-  {
-    id: "V-008",
-    name: "AfricanTech Energy",
-    type: "Energy & Power",
-    location: "Nairobi, Kenya",
-    contact: "Amina Osman",
-    email: "amina@africantech.com",
-    phone: "+254 722 345 678",
-    status: "approved",
-    rating: 4.6,
-    lastDelivery: "2023-07-09",
-  },
-];
+import { useVendors } from "@/features/vendors/hooks/useVendors";
+import { VendorType } from "../types/vendor";
 
 const Vendors = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState<"all" | VendorType>("all");
   const [sortField, setSortField] = useState("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const { data, isLoading, error, refetch } = useVendors();
+  
+  // Ensure we're working with an array
+  const vendors = Array.isArray(data) ? data : [];
+
   // Filter function
-  const filteredVendors = vendorsData.filter((vendor) => {
+  const filteredVendors = (vendors || []).filter((vendor) => {
     // Search filter
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = 
       vendor.name.toLowerCase().includes(searchLower) ||
-      vendor.location.toLowerCase().includes(searchLower) ||
-      vendor.contact.toLowerCase().includes(searchLower) ||
-      vendor.email.toLowerCase().includes(searchLower);
+      vendor.reg_no.toLowerCase().includes(searchLower) ||
+      vendor.description.toLowerCase().includes(searchLower);
     
     // Status filter
     const matchesStatus = statusFilter === "all" || vendor.status === statusFilter;
     
     // Type filter
-    const matchesType = typeFilter === "all" || vendor.type === typeFilter;
+    const matchesType = typeFilter === "all" || vendor.vendor_type === typeFilter;
     
     return matchesSearch && matchesStatus && matchesType;
   });
   
   // Sort function
   const sortedVendors = [...filteredVendors].sort((a, b) => {
-    let fieldA = a[sortField as keyof typeof a];
-    let fieldB = b[sortField as keyof typeof b];
+    const fieldA = a[sortField as keyof typeof a];
+    const fieldB = b[sortField as keyof typeof b];
     
-    if (typeof fieldA === 'string') {
-      fieldA = fieldA.toLowerCase();
-      fieldB = (fieldB as string).toLowerCase();
+    if (typeof fieldA === 'string' && typeof fieldB === 'string') {
+      return sortDirection === "asc" 
+        ? fieldA.toLowerCase().localeCompare(fieldB.toLowerCase())
+        : fieldB.toLowerCase().localeCompare(fieldA.toLowerCase());
     }
     
-    if (fieldA < fieldB) return sortDirection === "asc" ? -1 : 1;
-    if (fieldA > fieldB) return sortDirection === "asc" ? 1 : -1;
+    if (typeof fieldA === 'number' && typeof fieldB === 'number') {
+      return sortDirection === "asc" ? fieldA - fieldB : fieldB - fieldA;
+    }
+    
     return 0;
   });
   
@@ -198,15 +107,14 @@ const Vendors = () => {
   };
   
   // Refresh function
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 1000);
+    await refetch();
+    setIsRefreshing(false);
   };
   
   // Get unique vendor types for filter
-  const vendorTypes = Array.from(new Set(vendorsData.map(vendor => vendor.type)));
+  const vendorTypes = Array.from(new Set(vendors.map(vendor => vendor.vendor_type))) as VendorType[];
   
   // Animation variants
   const container = {
@@ -224,6 +132,20 @@ const Vendors = () => {
     show: { opacity: 1, y: 0 }
   };
 
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-2">Error Loading Vendors</h2>
+          <p className="text-muted-foreground mb-4">
+            {error instanceof Error ? error.message : 'Failed to load vendors'}
+          </p>
+          <Button onClick={() => refetch()}>Try Again</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       variants={container}
@@ -240,10 +162,12 @@ const Vendors = () => {
         </motion.div>
         
         <motion.div variants={item}>
-          <Button className="flex items-center gap-2">
-            <UserPlus className="h-4 w-4" />
-            <span>Add Vendor</span>
-          </Button>
+          <Link to="/dashboard/vendors/new">
+            <Button className="flex items-center gap-2">
+              <UserPlus className="h-4 w-4" />
+              <span>Add Vendor</span>
+            </Button>
+          </Link>
         </motion.div>
       </div>
       
@@ -278,13 +202,13 @@ const Vendors = () => {
                       <SelectItem value="all">All Statuses</SelectItem>
                       <SelectItem value="approved">Approved</SelectItem>
                       <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="suspended">Suspended</SelectItem>
+                      <SelectItem value="rejected">Rejected</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div className="w-48">
-                  <Select value={typeFilter} onValueChange={setTypeFilter}>
+                  <Select value={typeFilter} onValueChange={(value: typeof typeFilter) => setTypeFilter(value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Type" />
                     </SelectTrigger>
@@ -292,7 +216,7 @@ const Vendors = () => {
                       <SelectItem value="all">All Types</SelectItem>
                       {vendorTypes.map((type) => (
                         <SelectItem key={type} value={type}>
-                          {type}
+                          {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -320,11 +244,11 @@ const Vendors = () => {
                     <DropdownMenuItem onClick={() => { setSearchTerm(""); setStatusFilter("all"); setTypeFilter("all"); }}>
                       Clear all filters
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setSortField("rating")}>
-                      Sort by rating
+                    <DropdownMenuItem onClick={() => setSortField("fleet_size")}>
+                      Sort by fleet size
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setSortField("lastDelivery")}>
-                      Sort by last delivery
+                    <DropdownMenuItem onClick={() => setSortField("name")}>
+                      Sort by name
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -352,18 +276,18 @@ const Vendors = () => {
                         )}
                       </div>
                     </TableHead>
-                    <TableHead onClick={() => toggleSort("type")}>
+                    <TableHead onClick={() => toggleSort("vendor_type")}>
                       <div className="flex items-center cursor-pointer">
                         Type
-                        {sortField === "type" && (
+                        {sortField === "vendor_type" && (
                           <ChevronsUpDown className="ml-1 h-4 w-4" />
                         )}
                       </div>
                     </TableHead>
-                    <TableHead onClick={() => toggleSort("location")}>
+                    <TableHead onClick={() => toggleSort("reg_no")}>
                       <div className="flex items-center cursor-pointer">
-                        Location
-                        {sortField === "location" && (
+                        Reg No.
+                        {sortField === "reg_no" && (
                           <ChevronsUpDown className="ml-1 h-4 w-4" />
                         )}
                       </div>
@@ -376,10 +300,10 @@ const Vendors = () => {
                         )}
                       </div>
                     </TableHead>
-                    <TableHead onClick={() => toggleSort("rating")}>
+                    <TableHead onClick={() => toggleSort("fleet_size")}>
                       <div className="flex items-center cursor-pointer">
-                        Rating
-                        {sortField === "rating" && (
+                        Fleet Size
+                        {sortField === "fleet_size" && (
                           <ChevronsUpDown className="ml-1 h-4 w-4" />
                         )}
                       </div>
@@ -388,7 +312,16 @@ const Vendors = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sortedVendors.length === 0 ? (
+                  {isLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-8">
+                        <div className="flex items-center justify-center">
+                          <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                          <span>Loading vendors...</span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ) : sortedVendors.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                         No vendors found matching your filters.
@@ -396,16 +329,20 @@ const Vendors = () => {
                     </TableRow>
                   ) : (
                     sortedVendors.map((vendor) => (
-                      <TableRow key={vendor.id} className="hover-scale">
+                      <TableRow key={vendor.unique_id} className="hover-scale">
                         <TableCell className="font-medium">{vendor.id}</TableCell>
                         <TableCell>
                           <div>
                             <div className="font-medium">{vendor.name}</div>
-                            <div className="text-xs text-muted-foreground">{vendor.contact}</div>
+                            <div className="text-xs text-muted-foreground">{vendor.description}</div>
                           </div>
                         </TableCell>
-                        <TableCell>{vendor.type}</TableCell>
-                        <TableCell>{vendor.location}</TableCell>
+                        <TableCell>
+                          {vendor.vendor_type.split('_').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                          ).join(' ')}
+                        </TableCell>
+                        <TableCell>{vendor.reg_no}</TableCell>
                         <TableCell>
                           <Badge
                             variant={
@@ -422,18 +359,18 @@ const Vendors = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center">
-                            <span className="mr-2">{vendor.rating.toFixed(1)}</span>
+                            <span className="mr-2">{vendor.fleet_size}</span>
                             <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-wfp-blue"
-                                style={{ width: `${(vendor.rating / 5) * 100}%` }}
+                                style={{ width: `${(vendor.fleet_size / 200) * 100}%` }}
                               ></div>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end">
-                            <Link to={`/dashboard/vendors/${vendor.id}`}>
+                            <Link to={`/dashboard/vendors/${vendor.unique_id}`}>
                               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                                 <span className="sr-only">Open menu</span>
                                 <MoreHorizontal className="h-4 w-4" />
@@ -452,7 +389,7 @@ const Vendors = () => {
             <div className="flex items-center justify-between mt-4">
               <div className="text-sm text-muted-foreground">
                 Showing <span className="font-medium">{sortedVendors.length}</span> of{" "}
-                <span className="font-medium">{vendorsData.length}</span> vendors
+                <span className="font-medium">{vendors?.length || 0}</span> vendors
               </div>
               
               <div className="flex items-center space-x-6">

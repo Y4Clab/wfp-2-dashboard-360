@@ -5,20 +5,22 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Login from "./features/auth/pages/Login";
+
+import Register from "./features/auth/pages/Register";
 import Dashboard from "./pages/Dashboard";
-import Vendors from "./pages/Vendors";
-import VendorDetail from "./pages/VendorDetail";
-import VendorNew from "./pages/VendorNew";
-import VendorForm from "./pages/VendorForm";
-import Trucks from "./pages/Trucks/Trucks";
+import Vendors from "./features/vendors/pages/Vendors";
+import VendorDetail from "./features/vendors/pages/VendorDetail";
+import VendorNew from "./features/vendors/pages/VendorNew";
+import VendorForm from "./features/vendors/pages/VendorForm";
+import Trucks from "./features/trucks/pages/Trucks/Trucks";
 import TruckNew from "./pages/Trucks/TruckNew";
 import TruckService from "./pages/Trucks/TruckService";
-import Missions from "./pages/Missions";
-import MissionDetail from "./pages/MissionDetail";
-import MissionNew from "./pages/MissionNew";
-import MissionForm from "./pages/MissionForm";
+import TrucksForm from "./features/trucks/pages/TrucksForm";
+import Missions from "./features/missions/pages/Missions";
+import MissionDetail from "./features/missions/pages/MissionDetail";
+import MissionNew from "./features/missions/pages/MissionNew";
+import MissionForm from "./features/missions/pages/MissionForm";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
@@ -39,7 +41,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+            
+            <Route path="/register" element={<Register />} />
             
             {/* Dashboard Routes */}
             <Route path="/dashboard" element={<DashboardLayout />}>
@@ -53,6 +56,7 @@ const App = () => (
               
               {/* Truck Routes */}
               <Route path="trucks" element={<Trucks />} />
+              <Route path="trucks/new" element={<TrucksForm />} />
               <Route path="trucks/new" element={<TruckNew />} />
               <Route path="trucks/service" element={<TruckService />} />
               <Route path="trucks/:id" element={<NotFound />} />

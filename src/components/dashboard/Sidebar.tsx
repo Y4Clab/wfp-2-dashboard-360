@@ -71,7 +71,7 @@ const NavItem = ({ icon: Icon, label, to, isOpen, isActive, subItems }: NavItemP
         {isOpen && hasSubItems && (
           <ChevronDown
             className={cn(
-              "h-4 w-4 transition-transform",
+              "h-4 w-5 transition-transform",
               isSubMenuOpen && "transform rotate-180"
             )}
           />
@@ -131,6 +131,12 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     },
     { 
       icon: Car, 
+      label: "Trucks",
+      subItems: [
+        { label: "All Trucks", to: "/dashboard/trucks" },
+        { label: "Add New Truck", to: "/dashboard/trucks/new" },
+        {label:"Assign Mission", to:"/dashboard/trucks/assign-mission"}
+      ]
       label: "Trucks", 
       to: "/dashboard/trucks",
       subItems: [
@@ -206,7 +212,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         width: isOpen ? 280 : 80,
         transition: { duration: 0.3, ease: "easeInOut" }
       }}
-      className="h-full fixed left-0 top-0 z-20 pt-20 bg-white shadow-subtle flex flex-col"
+      className="fixed top-16 left-0 bottom-0 bg-white shadow-subtle flex flex-col z-20"
     >
       <div className="flex-1 overflow-y-auto px-4 py-4">
         <nav className="space-y-1">

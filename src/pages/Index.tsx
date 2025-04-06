@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -33,11 +32,21 @@ const Index = () => {
                 Log In
               </Button>
             </Link>
+            <Link to="/register" className="hidden md:block">
+              <Button className="rounded-full">
+                Sign Up
+              </Button>
+            </Link>
           </nav>
           <div className="md:hidden">
             <Link to="/login">
-              <Button variant="outline" className="rounded-full">
+              <Button variant="outline" className="rounded-full mr-2">
                 Log In
+              </Button>
+            </Link>
+            <Link to="/register">
+              <Button className="rounded-full">
+                Sign Up
               </Button>
             </Link>
           </div>
