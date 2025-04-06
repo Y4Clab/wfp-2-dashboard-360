@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { MissionFormValues, Product } from "@/types/mission-form";
+import { MissionFormValues, Product } from "@/features/missions/types/mission-form";
 
 interface CargoFormProps {
   form: UseFormReturn<MissionFormValues>;

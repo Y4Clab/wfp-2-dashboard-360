@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   Camera, 
@@ -20,28 +19,55 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/features/auth/context/AuthContext";
+
+interface ProfileData {
+  profile_unique_id: string;
+  profile_organization: string;
+  profile_firstname: string;
+  profile_lastname: string;
+  profile_email: string;
+  profile_phone: string;
+  profile_type: string;
+  user_role: {
+    role_name: string;
+    role_description: string;
+  };
+}
 
 const Profile = () => {
   const { toast } = useToast();
+  const { user, refreshProfile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   
-  const [formData, setFormData] = useState({
-    name: "John Doe",
-    role: "WFP Admin",
-    email: "john.doe@wfp.org",
-    phone: "+1 (555) 123-4567",
-    location: "Nairobi, Kenya",
-    bio: "WFP logistics and operations administrator with over 5 years of experience coordinating food distribution missions across East Africa.",
-    profilePic: "https://randomuser.me/api/portraits/men/32.jpg"
+  const [formData, setFormData] = useState<ProfileData>({
+    profile_unique_id: "",
+    profile_organization: "",
+    profile_firstname: "",
+    profile_lastname: "",
+    profile_email: "",
+    profile_phone: "",
+    profile_type: "",
+    user_role: {
+      role_name: "",
+      role_description: ""
+    }
   });
+
+  useEffect(() => {
+    if (user) {
+      setFormData(user as unknown as ProfileData);
+    }
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = async () => {
     setIsEditing(false);
+    await refreshProfile();
     toast({
       title: "Profile updated",
       description: "Your profile has been updated successfully.",
@@ -65,17 +91,9 @@ const Profile = () => {
         <Button 
           variant={isEditing ? "destructive" : "default"}
           onClick={() => {
-            if (isEditing) {
+            if (isEditing && user) {
               // Reset to original values
-              setFormData({
-                name: "John Doe",
-                role: "WFP Admin",
-                email: "john.doe@wfp.org",
-                phone: "+1 (555) 123-4567",
-                location: "Nairobi, Kenya",
-                bio: "WFP logistics and operations administrator with over 5 years of experience coordinating food distribution missions across East Africa.",
-                profilePic: "https://randomuser.me/api/portraits/men/32.jpg"
-              });
+              setFormData(user as unknown as ProfileData);
             }
             setIsEditing(!isEditing);
           }}
@@ -100,11 +118,9 @@ const Profile = () => {
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-background bg-background">
-                  <img
-                    src={formData.profilePic}
-                    alt={formData.name}
-                    className="h-full w-full object-cover"
-                  />
+                  <div className="h-full w-full bg-wfp-blue flex items-center justify-center text-white text-4xl font-bold">
+                    {formData.profile_firstname?.[0]}{formData.profile_lastname?.[0]}
+                  </div>
                 </div>
                 {isEditing && (
                   <Button 
@@ -116,9 +132,9 @@ const Profile = () => {
                 )}
               </div>
               <div className="text-center">
-                <h2 className="text-xl font-bold">{formData.name}</h2>
+                <h2 className="text-xl font-bold">{formData.profile_firstname} {formData.profile_lastname}</h2>
                 <Badge variant="outline" className="mt-1 bg-blue-100 text-blue-700">
-                  {formData.role}
+                  {formData.profile_type}
                 </Badge>
               </div>
 
@@ -127,29 +143,26 @@ const Profile = () => {
               <div className="w-full space-y-3">
                 <div className="flex items-center space-x-2">
                   <Mail className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{formData.email}</span>
+                  <span className="text-sm">{formData.profile_email}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{formData.phone}</span>
+                  <span className="text-sm">{formData.profile_phone}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{formData.location}</span>
+                  <span className="text-sm">{formData.profile_organization}</span>
                 </div>
               </div>
 
               <Separator className="my-2" />
 
               <div className="text-center space-y-2">
-                <h3 className="font-medium">Account Status</h3>
+                <h3 className="font-medium">Role Information</h3>
                 <div className="flex gap-2 justify-center">
                   <Badge variant="outline" className="bg-green-100 text-green-700">
                     <CheckCircle className="h-3 w-3 mr-1" />
-                    Verified
-                  </Badge>
-                  <Badge variant="outline" className="bg-blue-100 text-blue-700">
-                    Active
+                    {formData.user_role.role_name}
                   </Badge>
                 </div>
               </div>
@@ -170,96 +183,104 @@ const Profile = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium">
-                    Full Name
+                  <label htmlFor="profile_firstname" className="text-sm font-medium">
+                    First Name
                   </label>
                   {isEditing ? (
                     <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
+                      id="profile_firstname"
+                      name="profile_firstname"
+                      value={formData.profile_firstname}
                       onChange={handleChange}
                     />
                   ) : (
                     <div className="px-3 py-2 rounded-md bg-muted/40">
-                      <span className="text-sm">{formData.name}</span>
+                      <span className="text-sm">{formData.profile_firstname}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="profile_lastname" className="text-sm font-medium">
+                    Last Name
+                  </label>
+                  {isEditing ? (
+                    <Input
+                      id="profile_lastname"
+                      name="profile_lastname"
+                      value={formData.profile_lastname}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    <div className="px-3 py-2 rounded-md bg-muted/40">
+                      <span className="text-sm">{formData.profile_lastname}</span>
                     </div>
                   )}
                 </div>
                 
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">
+                  <label htmlFor="profile_email" className="text-sm font-medium">
                     Email Address
                   </label>
                   {isEditing ? (
                     <Input
-                      id="email"
-                      name="email"
+                      id="profile_email"
+                      name="profile_email"
                       type="email"
-                      value={formData.email}
+                      value={formData.profile_email}
                       onChange={handleChange}
                     />
                   ) : (
                     <div className="px-3 py-2 rounded-md bg-muted/40">
-                      <span className="text-sm">{formData.email}</span>
+                      <span className="text-sm">{formData.profile_email}</span>
                     </div>
                   )}
                 </div>
                 
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium">
+                  <label htmlFor="profile_phone" className="text-sm font-medium">
                     Phone Number
                   </label>
                   {isEditing ? (
                     <Input
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
+                      id="profile_phone"
+                      name="profile_phone"
+                      value={formData.profile_phone}
                       onChange={handleChange}
                     />
                   ) : (
                     <div className="px-3 py-2 rounded-md bg-muted/40">
-                      <span className="text-sm">{formData.phone}</span>
+                      <span className="text-sm">{formData.profile_phone}</span>
                     </div>
                   )}
                 </div>
                 
                 <div className="space-y-2">
-                  <label htmlFor="location" className="text-sm font-medium">
-                    Location
+                  <label htmlFor="profile_organization" className="text-sm font-medium">
+                    Organization
                   </label>
                   {isEditing ? (
                     <Input
-                      id="location"
-                      name="location"
-                      value={formData.location}
+                      id="profile_organization"
+                      name="profile_organization"
+                      value={formData.profile_organization}
                       onChange={handleChange}
                     />
                   ) : (
                     <div className="px-3 py-2 rounded-md bg-muted/40">
-                      <span className="text-sm">{formData.location}</span>
+                      <span className="text-sm">{formData.profile_organization}</span>
                     </div>
                   )}
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label htmlFor="bio" className="text-sm font-medium">
-                  Bio
-                </label>
-                {isEditing ? (
-                  <Textarea
-                    id="bio"
-                    name="bio"
-                    value={formData.bio}
-                    onChange={handleChange}
-                    rows={5}
-                  />
-                ) : (
-                  <div className="px-3 py-2 rounded-md bg-muted/40 min-h-[80px]">
-                    <span className="text-sm">{formData.bio}</span>
+
+                <div className="space-y-2">
+                  <label htmlFor="profile_type" className="text-sm font-medium">
+                    Profile Type
+                  </label>
+                  <div className="px-3 py-2 rounded-md bg-muted/40">
+                    <span className="text-sm">{formData.profile_type}</span>
                   </div>
-                )}
+                </div>
               </div>
               
               {isEditing && (
@@ -276,31 +297,22 @@ const Profile = () => {
 
         <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle>Activity Log</CardTitle>
+            <CardTitle>Role Information</CardTitle>
             <CardDescription>
-              Recent activity on your account
+              Your role and permissions in the system
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[
-                { action: "Profile updated", timestamp: "10 minutes ago", icon: <UserCircle className="h-4 w-4" /> },
-                { action: "Logged in from new device", timestamp: "2 days ago", icon: <User className="h-4 w-4" /> },
-                { action: "Password changed", timestamp: "1 week ago", icon: <User className="h-4 w-4" /> },
-              ].map((activity, i) => (
-                <div 
-                  key={i} 
-                  className="flex items-center p-3 rounded-md hover:bg-muted/50"
-                >
-                  <div className="flex items-center justify-center h-8 w-8 rounded-full bg-muted mr-4">
-                    {activity.icon}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium">{activity.action}</p>
-                    <p className="text-sm text-muted-foreground">{activity.timestamp}</p>
-                  </div>
+              <div className="flex items-center p-3 rounded-md bg-muted/50">
+                <div className="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-700 mr-4">
+                  <UserCircle className="h-4 w-4" />
                 </div>
-              ))}
+                <div className="flex-1">
+                  <p className="font-medium">{formData.user_role.role_name}</p>
+                  <p className="text-sm text-muted-foreground">{formData.user_role.role_description}</p>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

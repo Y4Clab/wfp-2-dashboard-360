@@ -7,8 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 
-// Import types
-import { Mission, MissionStatus, MissionPriority, MissionType } from "@/types/mission";
+//Import types
+import { Mission, MissionStatus, MissionPriority, MissionType } from "@/features/missions/types/mission.types";
 
 // Import components
 import MissionTable from "@/components/missions/MissionTable";
@@ -17,8 +17,8 @@ import MissionStatistics from "@/components/missions/MissionStatistics";
 import RecentMissions from "@/components/missions/RecentMissions";
 
 // Define API URL
-const API_BASE_URL = "http://192.168.0.16:8000/api";
-const MISSIONS_URL = `${API_BASE_URL}/missions/`;
+const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
+const MISSIONS_URL = `${API_BASE_URL}/api/missions/`;
 
 const Missions = () => {
   const navigate = useNavigate();

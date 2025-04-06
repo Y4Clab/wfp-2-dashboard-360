@@ -1,5 +1,5 @@
 import { Calendar, Check, Truck } from "lucide-react";
-import { Mission } from "@/types/mission";
+import { Mission } from "@/features/missions/types/mission.types";
 import {
   Card,
   CardContent,
