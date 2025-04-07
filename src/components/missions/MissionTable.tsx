@@ -81,15 +81,15 @@ const MissionTable = ({ missions, loading, error }: MissionTableProps) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge className={getStatusColor(mission.status || 'pending')}>
-                    {mission.status === "active" ? (
+                  <Badge className={getStatusColor(mission.status.toLowerCase() || 'pending')}>
+                    {mission.status.toLowerCase() === "active" ? (
                       <Clock className="h-3 w-3 mr-1" />
-                    ) : mission.status === "completed" ? (
+                    ) : mission.status.toLowerCase() === "completed" ? (
                       <Check className="h-3 w-3 mr-1" />
                     ) : (
                       <Calendar className="h-3 w-3 mr-1" />
                     )}
-                    {(mission.status || 'pending').charAt(0).toUpperCase() + (mission.status || 'pending').slice(1)}
+                    {(mission.status.toLowerCase() || 'pending').charAt(0).toUpperCase() + (mission.status.toLowerCase() || 'pending').slice(1)}
                   </Badge>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
@@ -101,7 +101,7 @@ const MissionTable = ({ missions, loading, error }: MissionTableProps) => {
                   {mission.number_of_beneficiaries || 0}
                 </TableCell>
                 <TableCell>
-                  <Link to={`/dashboard/missions/${mission.unique_id}`}>
+                  <Link to={`/dashboard/missions/${mission.id}`}>
                     <Button variant="ghost" size="icon">
                       <ChevronRight className="h-4 w-4" />
                     </Button>

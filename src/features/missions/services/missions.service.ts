@@ -3,7 +3,6 @@ import { Mission, MissionFilters } from '../types/mission.types';
 
 const baseUrl = import.meta.env.VITE_APP_API_URL;
 
-//get all missions
 
 
 const getAuthHeaders = () => {
@@ -20,7 +19,7 @@ const handleApiError = (error: any): never => {
   const message = error.response?.data?.message || error.message || 'An error occurred';
   throw new Error(message);
 };
-
+//vendor 
 export const missionsService = {
   getVendorMissions: async (filters?: MissionFilters): Promise<Mission[]> => {
     try {
@@ -47,30 +46,7 @@ export const missionsService = {
       if (!Array.isArray(response.data)) {
         throw new Error('Invalid response format from server');
       }
-
-      // Validate mission objects
-      const validMissions = response.data.filter((item: any): item is Mission => {
-        return (
-          item &&
-          typeof item.id === 'number' &&
-          typeof item.mission_id === 'string' &&
-          typeof item.title === 'string' &&
-          typeof item.type === 'string' &&
-          typeof item.number_of_beneficiaries === 'number' &&
-          typeof item.description === 'string' &&
-          typeof item.dept_location === 'string' &&
-          typeof item.destination_location === 'string' &&
-          typeof item.start_date === 'string' &&
-          typeof item.end_date === 'string' &&
-          typeof item.status === 'string'
-        );
-      });
-
-      if (validMissions.length < response.data.length) {
-        console.warn('Some missions were filtered out due to invalid data');
-      }
-
-      return validMissions;
+      return response.data;
     } catch (error) {
       return handleApiError(error);
     }

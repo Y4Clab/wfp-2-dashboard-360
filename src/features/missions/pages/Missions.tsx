@@ -20,13 +20,24 @@ import RecentMissions from "@/components/missions/RecentMissions";
 const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
 const MISSIONS_URL = `${API_BASE_URL}/api/missions/`;
 
+interface MissionFiltersProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  statusFilter: MissionStatus | "all";
+  setStatusFilter: (status: MissionStatus | "all") => void;
+  typeFilter: MissionType | "all";
+  setTypeFilter: (type: MissionType | "all") => void;
+  priorityFilter: MissionPriority | "all";
+  setPriorityFilter: (priority: MissionPriority | "all") => void;
+}
+
 const Missions = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<MissionStatus>("all");
-  const [priorityFilter, setPriorityFilter] = useState<MissionPriority>("all");
-  const [typeFilter, setTypeFilter] = useState<MissionType>("all");
+  const [statusFilter, setStatusFilter] = useState<MissionStatus | "all">("all");
+  const [priorityFilter, setPriorityFilter] = useState<MissionPriority | "all">("all");
+  const [typeFilter, setTypeFilter] = useState<MissionType | 'all'>('all');
   const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +75,12 @@ const Missions = () => {
     };
 
     fetchMissions();
+
+    
   }, [toast]);
+  
+  
+  
 
   // Filter missions based on search query and filters
   const filteredMissions = missions.filter((mission) => {
@@ -79,6 +95,7 @@ const Missions = () => {
     const matchesPriority = true; // priorityFilter === "all"
     const matchesType = typeFilter === "all" || mission.type === typeFilter;
     
+    // Return the combined filter result
     return matchesSearch && matchesStatus && matchesPriority && matchesType;
   });
 
@@ -111,7 +128,7 @@ const Missions = () => {
             Create, assign, and track food distribution missions
           </p>
         </div>
-        <Button className="flex items-center gap-2" onClick={() => navigate('/dashboard/create-mission')}>
+        <Button className="flex items-center gap-2" onClick={() => navigate('/dashboard/missions/new')}>
           <Plus size={16} />
           <span>Create Mission</span>
         </Button>

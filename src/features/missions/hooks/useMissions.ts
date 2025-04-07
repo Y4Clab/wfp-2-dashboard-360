@@ -9,6 +9,7 @@ export const useMissions = () => {
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
+  //vendor missions
   const fetchMissions = useCallback(async (status?: MissionStatus) => {
     try {
       setIsLoading(true);
@@ -16,6 +17,7 @@ export const useMissions = () => {
       
       const data = await missionsService.getVendorMissions({
         status: status as MissionStatus
+        
       });
       
       setMissions(data);
@@ -51,4 +53,5 @@ export const useMissions = () => {
     fetchMissions,
     getMissionById
   };
-}; 
+};
+

@@ -32,6 +32,7 @@ import Settings from "@/pages/Settings";
 import Profile from "@/pages/Profile";
 import LiveTracking from "@/pages/LiveTracking";
 import NotFound from "@/pages/NotFound";
+import VendorMissionDetail from "./features/missions/pages/VendorMissionsDetails";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -100,7 +101,7 @@ const App = () => (
                 
                 {/* Vendor-specific Routes */}
                 <Route path="vendor/missions" element={<VendorMissions />} />
-                <Route path="vendor/missions/:id" element={<MissionDetail />} />
+                <Route path="vendor/missions/:id" element={<VendorMissionDetail />} />
                 
                 {/* Tracking Routes */}
                 <Route path="tracking" element={<LiveTracking />} />

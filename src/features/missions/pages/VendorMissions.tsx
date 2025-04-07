@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,14 +31,27 @@ const VendorMissions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const { missions, isLoading, error, fetchMissions } = useMissions();
+
   const { toast } = useToast();
   const { user } = useAuth();
 
+  // Get status from URL or default to "all"
   const status = searchParams.get("status") as MissionStatus || "all";
 
   useEffect(() => {
-    fetchMissions(status);
+    fetchMissions();
+    console.log(missions);
   }, [status, fetchMissions]);
+
+  const handleStatusChange = (newStatus: string) => {
+    if (newStatus === "all") {
+      // Remove status parameter if "all" is selected
+      searchParams.delete("status");
+    } else {
+      searchParams.set("status", newStatus);
+    }
+    setSearchParams(searchParams);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -94,7 +107,7 @@ const VendorMissions = () => {
             </div>
             <Select
               value={status}
-              onValueChange={(value) => setSearchParams({ status: value })}
+              onValueChange={handleStatusChange}
             >
               <SelectTrigger className="w-full md:w-[180px]">
                 <SelectValue placeholder="Select status" />
@@ -116,8 +129,10 @@ const VendorMissions = () => {
                   <TableHead>Status</TableHead>
                   <TableHead>Dates</TableHead>
                   <TableHead>Destination</TableHead>
+                  <TableHead>Truck</TableHead>
                   <TableHead>Type</TableHead>
-                  <TableHead>Beneficiaries</TableHead>
+                  
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -141,7 +156,7 @@ const VendorMissions = () => {
                   </TableRow>
                 ) : (
                   filteredMissions.map((mission) => (
-                    <TableRow key={mission.mission_id}>
+                    <TableRow key={mission.id}>
                       <TableCell className="font-medium">
                         {mission.title}
                       </TableCell>
@@ -166,12 +181,19 @@ const VendorMissions = () => {
                         </div>
                       </TableCell>
                       <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Truck className="h-4 w-4 text-muted-foreground" />
+                          {mission.assigned_trucks?.length > 0 ? "Assigned": "N/A"  }
+                        </div>
+                      </TableCell>
+                      <TableCell>
                         <Badge variant="outline">
                           {mission.type}
                         </Badge>
                       </TableCell>
+                     
                       <TableCell>
-                        {mission.number_of_beneficiaries}
+                        <Button variant="outline"><Link to={`/dashboard/vendor/missions/${mission.id}`}>View</Link></Button>
                       </TableCell>
                     </TableRow>
                   ))

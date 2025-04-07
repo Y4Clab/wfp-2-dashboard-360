@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { LoginRequest, LoginResponse, UserProfile } from '../types/auth';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://192.168.0.13:8000/';
+const API_URL = import.meta.env.VITE_APP_API_URL;
 
 const authApi = {
   login: async (credentials: LoginRequest): Promise<LoginResponse> => {

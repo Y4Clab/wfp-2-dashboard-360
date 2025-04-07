@@ -32,9 +32,9 @@ const MissionFilters = ({
   setPriorityFilter
 }: MissionFiltersProps) => {
   const clearFilters = () => {
-    setStatusFilter("all");
-    setPriorityFilter("all");
-    setTypeFilter("all");
+    setStatusFilter(MissionFilters.ALL);
+    setPriorityFilter(MissionPriority.ALL);
+    setTypeFilter(MissionType.ALL);
     setSearchQuery("");
   };
   
