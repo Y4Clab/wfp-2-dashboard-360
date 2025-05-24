@@ -13,6 +13,8 @@ dist-ssr
 *.local
 
 .src/.env
+.env
+
 .src/routes
 
 # Editor directories and files
