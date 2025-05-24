@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle, Clock, Filter, Search } from "lucide-react";
@@ -8,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import GoogleMapComponent from "@/components/maps/GoogleMap";
+import { GOOGLE_MAPS_API_KEY } from "@/lib/maps-config";
 
 // Mock data for trucks
 const TRUCKS = [
@@ -123,14 +124,11 @@ const LiveTracking = () => {
             <CardDescription>Real-time location of all active trucks and missions</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="aspect-video bg-slate-100 rounded-md flex items-center justify-center">
-              <div className="text-center p-8">
-                <p className="text-lg font-medium text-muted-foreground mb-4">Interactive Map</p>
-                <p className="text-sm text-muted-foreground">
-                  This would be replaced with an actual interactive map using Google Maps, Mapbox, or Leaflet
-                </p>
-              </div>
-            </div>
+            <GoogleMapComponent 
+              apiKey={GOOGLE_MAPS_API_KEY}
+              height="500px" 
+              className="rounded-md"
+            />
           </CardContent>
         </Card>
 
