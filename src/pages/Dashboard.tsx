@@ -19,7 +19,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/features/auth/context/AuthContext";
 
 // Import our new components
-import LiveTrackingMap from "@/components/dashboard/LiveTrackingMap";
+import LiveTrackingMap from "@/components/maps/GoogleMap";
+import { GOOGLE_MAPS_API_KEY } from "@/lib/maps-config";
 import DeliverySummary from "@/components/dashboard/DeliverySummary";
 import PerformanceMetrics from "@/components/dashboard/PerformanceMetrics";
 import IncidentReports from "@/components/dashboard/IncidentReports";
@@ -230,7 +231,7 @@ const Dashboard = () => {
       {/* Main Dashboard Components */}
       <div className="grid gap-6 md:grid-cols-2">
         <motion.div variants={item} className="md:col-span-2">
-          <LiveTrackingMap />
+          <LiveTrackingMap apiKey={GOOGLE_MAPS_API_KEY} />
         </motion.div>
 
         <motion.div variants={item} className="md:col-span-2">
